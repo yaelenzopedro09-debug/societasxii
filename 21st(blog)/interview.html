@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Martial Law Interviews - Societas XXI</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary-gold: #ffd700;
+        --primary-crimson: #dc143c;
+        --dark-bg: #111;
+        --darker-bg: #0a0a0a;
+        --text-light: #f8f8f8;
+        --card-bg: rgba(30, 30, 30, 0.85);
+        --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    body {
+        background: var(--dark-bg);
+        color: var(--text-light);
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.7;
+        overflow-x: hidden;
+        background-image: 
+            radial-gradient(circle at 15% 50%, rgba(220, 20, 60, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 85% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 50% 80%, rgba(220, 20, 60, 0.1) 0%, transparent 20%);
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 6%;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        transition: all 0.4s ease;
+    }
+
+    /* Logo */
+    .LOGO {
+        font-size: 1.9rem;
+        color: cornsilk;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 11;
+    }
+    .LOGO:hover {
+        color: gold;
+        transform: scale(1.08);
+    }
+
+    /* Nav Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        position: relative;
+        text-decoration: none;
+        color: cornsilk;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 5px 0;
+    }
+
+    /* Sliding underline effect */
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, gold, crimson);
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+        transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    /* Search Box */
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        width: 160px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-box:focus-within {
+        width: 200px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .search-box input {
+        border: none;
+        padding: 10px 15px;
+        outline: none;
+        font-size: 0.9rem;
+        width: 100%;
+        background: transparent;
+    }
+
+    .search-box button {
+        background: gold;
+        border: none;
+        padding: 9px 15px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    .search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+    
+    /* Mobile Search Toggle */
+    .search-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: cornsilk;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 5px;
+    }
+
+    .search-toggle:hover {
+        color: gold;
+        transform: scale(1.1);
+    }
+
+    /* Mobile Search Container */
+    .mobile-search-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        z-index: 10;
+    }
+
+    .mobile-search-container.active {
+        display: block;
+    }
+
+    .mobile-search-box {
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .mobile-search-box input {
+        flex: 1;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 25px 0 0 25px;
+        outline: none;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: 1rem;
+    }
+
+    .mobile-search-box button {
+        padding: 12px 20px;
+        border: none;
+        background: gold;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+        z-index: 11;
+    }
+
+    .hamburger span {
+        height: 3px;
+        width: 100%;
+        background-color: cornsilk;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 20px 40px;
+        transition: right 0.4s ease;
+        z-index: 9;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-nav.active {
+        right: 0;
+    }
+
+    .mobile-nav-links {
+        list-style: none;
+        width: 100%;
+    }
+
+    .mobile-nav-links li {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .mobile-nav-links a {
+        color: cornsilk;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-links a:hover {
+        background: rgba(255, 215, 0, 0.2);
+        color: gold;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+        z-index: 8;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Hero Section */
+    .hero {
+        min-height: 90vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url(ahm.jpg) center/cover no-repeat;
+        filter: grayscale(10%) brightness(0.3) blur(1px);
+        z-index: -1;
+        transform: scale(1.05);
+    }
+
+    .hero-content {
+        max-width: 1000px;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-light);
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        line-height: 1.2;
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .hero-title span {
+        color: var(--primary-gold);
+        position: relative;
+        display: inline-block;
+    }
+
+    .hero-title span::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+        transform: scaleX(0);
+        transition: transform 1s ease;
+    }
+
+    .hero:hover .hero-title span::after {
+        transform: scaleX(1);
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        max-width: 700px;
+        margin: 0 auto 40px;
+        color: rgba(255, 255, 255, 0.9);
+        animation: fadeInUp 1s ease-out 0.2s forwards;
+        opacity: 0;
+    }
+
+    /* Content Sections */
+    .section {
+        padding: 100px 6%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        text-align: center;
+        margin-bottom: 60px;
+        color: var(--primary-gold);
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-gold), var(--primary-crimson));
+        border-radius: 2px;
+    }
+
+    .content-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+    }
+
+    .content-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+        color: var(--primary-gold);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .card-title i {
+        font-size: 1.5rem;
+        color: var(--primary-crimson);
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .card-text p {
+        margin-bottom: 20px;
+    }
+
+    .highlight {
+        color: var(--primary-gold);
+        font-weight: 600;
+        background: rgba(255, 215, 0, 0.1);
+        padding: 0 4px;
+        border-radius: 3px;
+    }
+
+    blockquote {
+        border-left: 4px solid var(--primary-crimson);
+        padding: 20px 30px;
+        margin: 30px 0;
+        background: rgba(220, 20, 60, 0.1);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        position: relative;
+        transition: var(--transition);
+    }
+
+    blockquote:hover {
+        background: rgba(220, 20, 60, 0.15);
+        transform: translateX(5px);
+    }
+
+    blockquote::before {
+        content: '"';
+        font-size: 4rem;
+        position: absolute;
+        left: 10px;
+        top: -10px;
+        color: rgba(220, 20, 60, 0.3);
+        font-family: 'Playfair Display', serif;
+    }
+
+    /* Media Elements */
+    .media-container {
+        margin: 40px 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        transition: var(--transition);
+    }
+
+    .media-container:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    video, audio {
+        width: 100%;
+        display: block;
+        outline: none;
+        border-radius: 8px;
+    }
+
+    .media-title {
+        font-size: 1.4rem;
+        color: var(--primary-gold);
+        margin: 20px 0 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .media-description {
+        color: rgba(255, 255, 255, 0.8);
+        margin-bottom: 20px;
+        font-size: 1rem;
+    }
+
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 40px 0;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-block;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, var(--primary-gold), var(--primary-crimson));
+        color: var(--text-light);
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.5);
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary-gold);
+        color: var(--primary-gold);
+        box-shadow: none;
+    }
+
+    .btn-outline:hover {
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--darker-bg);
+        padding: 60px 6% 30px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .footer-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .footer-logo {
+        font-size: 2.2rem;
+        color: var(--primary-gold);
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .footer-text {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .footer-nav a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: var(--transition);
+        position: relative;
+    }
+
+    .footer-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--primary-gold);
+        transition: width 0.3s ease;
+    }
+
+    .footer-nav a:hover {
+        color: var(--primary-gold);
+    }
+
+    .footer-nav a:hover::after {
+        width: 100%;
+    }
+
+    .copyright {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        margin-top: 30px;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 3.5rem;
+        }
+        
+        .nav-links {
+            gap: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 12px 5%;
+        }
+        
+        .nav-links, .search-box {
+            display: none;
+        }
+        
+        .hamburger, .search-toggle {
+            display: flex;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .section {
+            padding: 60px 20px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+        }
+        
+        .content-card {
+            padding: 25px;
+        }
+        
+        .media-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Hamburger animation when active */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+        
+        .LOGO {
+            font-size: 1.7rem;
+        }
+    }
+  </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="LOGO">Societas XXI</div>
+        <ul class="nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+            <button type="button">🔍</button>
+        </div>
+        
+        <!-- Search Toggle Button (Mobile) -->
+        <button class="search-toggle" id="searchToggle">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    
+    <!-- Mobile Search Container -->
+    <div class="mobile-search-container" id="mobileSearchContainer">
+        <div class="mobile-search-box">
+            <input type="text" placeholder="Search..." id="mobileSearchInput">
+            <button type="button" id="mobileSearchBtn">🔍</button>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Martial Law <span>Interviews</span></h1>
+            <p class="hero-subtitle">First-hand accounts of life during a challenging period in Philippine history</p>
+        </div>
+    </section>
+
+    <!-- Interview Content Section -->
+    <section class="section">
+        <h2 class="section-title">Voices from the Past</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-microphone-alt"></i> Personal Accounts of Martial Law</h3>
+            <div class="card-text">
+                <p>The stories we collected from the people we interviewed about Martial Law were more than just historical accounts, they were windows into a reality where fear, discipline, and control shaped daily life. Listening to them felt like stepping into a time when the air itself seemed heavy, when the smallest actions could draw the watchful eye of authority, and when freedom was something people could no longer hold onto completely.</p>
+                
+                <!-- Video Interview - MOVED TO TOP -->
+            <div class="media-container">
+                <h3 class="media-title"><i class="fas fa-video"></i> Interview Video: Survivor Stories</h3>
+                <p class="media-description">Watch personal testimonies from those who experienced Martial Law</p>
+                <video controls poster="https://www.rappler.com/tachyon/2022/09/newspaper-titlecard-01-scaled.jpg">
+                    <source src="copy_803CA0AC-666E-44DB-A750-01DF70C3880F_compressed.mov" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+                
+                <p>Some interviewees remembered the period as one of strict order and discipline. Soldiers were stationed in public places, checkpoints were common, and anyone could be stopped at any time. They shared how military officers would go house to house, searching for weapons like guns or anything that could be used for rebellion. For them, this constant watch made the streets quieter and safer, because people were too scared to break the rules.</p>
+                
+                <blockquote>
+                    "The fear seeped into daily life in ways that might seem small but carried deep meaning."
+                </blockquote>
+                
+                <p>But for many others, the memories were far more painful. They described strict curfews where being outside past a certain time could mean being arrested, beaten, or even killed. They told us about nights when the roar of military trucks echoed through the streets, a signal that soldiers were out making arrests. It wasn't just criminals who were taken, sometimes it was ordinary neighbors, students, or community leaders, accused of crimes without proof. Many were never seen again.</p>
+                
+                <p>What stood out the most was how even inside their own homes, people couldn't feel safe. Soldiers could enter without warning, search through personal belongings, and question the family without explanation. Privacy was gone, and the walls that should have protected them offered no comfort. Human rights were trampled on, the right to speak freely, the right to feel safe, even the right to live without fear.</p>
+                
+                <p>The fear seeped into daily life in ways that might seem small but carried deep meaning. Conversations were guarded, because the wrong word could be overheard and reported. Communities became quieter, not because people were content, but because speaking out was dangerous. On top of this, the high prices of goods made survival even harder, adding economic pressure to the already suffocating atmosphere.</p>
+                
+                <p>Not everyone saw it the same way. Some said the strict rules reduced crime and kept order, and they appreciated that. But even they admitted that this came at the cost of people's freedom.</p>
+                
+                <p>This is why remembering this part of history is so important. It reminds us that our rights and freedoms should never be taken for granted. If we are not careful, power can be abused, and the same mistakes can be repeated. The stories of those who lived through Martial Law teach us to protect our freedoms, to speak up when there is injustice, and to ensure that no one in the future will have to live in fear inside their own home.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reflection Section -->
+    <section class="section">
+        <h2 class="section-title">Historical Reflection</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-balance-scale"></i> Learning from the Past</h3>
+            <div class="card-text">
+                <p>These interviews serve as powerful reminders of a complex period in Philippine history. While some remember the order and discipline, others cannot forget the fear and oppression. This contrast itself tells an important story about how historical experiences can vary greatly depending on one's perspective and circumstances.</p>
+                
+                <p>What remains clear is that periods of heightened control and surveillance leave lasting impacts on societies and individuals. The testimonies we've collected underscore the importance of protecting civil liberties while maintaining social order.</p>
+                
+                <blockquote>
+                    "The stories of those who lived through Martial Law teach us to protect our freedoms, to speak up when there is injustice."
+                </blockquote>
+                
+                <p>By preserving these accounts, we honor the experiences of those who lived through this era and create important educational resources for future generations. Understanding this history is crucial for building a society that values both security and freedom, remembering that true progress comes from learning from the past rather than repeating its mistakes.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="interview.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Interviews</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Societas XXI</div>
+            <p class="footer-text">Preserving historical memory through personal testimonies and accounts.</p>
+            
+            <div class="footer-nav">
+                <a href="21st.html">Home</a>
+                <a href="Poem.html">Reflection</a>
+                <a href="pt.html">Performance task</a>
+                <a href="interview.html">Interview</a>
+                <a href="member.html">Team</a>
+            </div>
+            
+            <p class="copyright">© 2025 Societas XXI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Prevent zooming on mobile devices
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
+        // Disable double tap to zoom
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Get elements
+        const searchInput = document.querySelector(".search-box input");
+        const searchButton = document.querySelector(".search-box button");
+        const mobileSearchInput = document.getElementById("mobileSearchInput");
+        const mobileSearchBtn = document.getElementById("mobileSearchBtn");
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("mobileNav");
+        const overlay = document.getElementById("overlay");
+        const searchToggle = document.getElementById("searchToggle");
+        const mobileSearchContainer = document.getElementById("mobileSearchContainer");
+
+        // Function to handle the search
+        function performSearch(inputElement) {
+            const query = inputElement.value.trim();
+            if (query) {
+                // Open Google search (or replace with your custom search)
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
+                // Close mobile search if open
+                mobileSearchContainer.classList.remove('active');
+                mobileSearchInput.value = '';
+            } else {
+                alert("Please enter a search term.");
+            }
+        }
+
+        // Click event for desktop search
+        searchButton.addEventListener("click", () => performSearch(searchInput));
+
+        // Enter key event for desktop search
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                performSearch(searchInput);
+            }
+        });
+
+        // Click event for mobile search
+        mobileSearchBtn.addEventListener("click", () => performSearch(mobileSearchInput));
+
+        // Enter key event for mobile search
+        mobileSearchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                performSearch(mobileSearchInput);
+            }
+        });
+
+        // Toggle mobile search
+        searchToggle.addEventListener('click', function() {
+            mobileSearchContainer.classList.toggle('active');
+            if (mobileSearchContainer.classList.contains('active')) {
+                mobileSearchInput.focus();
+            }
+        });
+
+        // Close mobile search when clicking outside
+        document.addEventListener('click', function(e) {
+            if (mobileSearchContainer.classList.contains('active') && 
+                !mobileSearchContainer.contains(e.target) && 
+                !searchToggle.contains(e.target)) {
+                mobileSearchContainer.classList.remove('active');
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+          const navbar = document.querySelector('.navbar');
+          if (window.scrollY > 50) {
+            navbar.style.background = "rgba(0, 0, 0, 0.85)";
+            navbar.style.padding = "10px 6%";
+          } else {
+            navbar.style.background = "rgba(0, 0, 0, 0.65)";
+            navbar.style.padding = "15px 6%";
+          }
+        });
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Close search if open
+            mobileSearchContainer.classList.remove('active');
+            
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            mobileNav.classList.remove('active');
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-card, .media-container').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            observer.observe(el);
+            
+            const index = Array.from(document.querySelectorAll('.content-card, .media-container')).indexOf(el);
+            el.style.transitionDelay = `${index * 0.1}s`;
+            
+            el.classList.add('observe-me');
+        });
+
+        // Add animation class when element is in view
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .observe-me.animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Navbar with Fixed Mobile Search</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Montserrat', sans-serif;
+    }
+
+    .main {
+        position: absolute;
+        width: 100%;
+        min-height: 100vh;
+        height: auto;
+        padding-bottom: 40px;
+    }
+
+    .main::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url(https://cdn.britannica.com/79/151179-050-E992EE91/Ferdinand-Marcos-1983.jpg) center/cover no-repeat;
+        filter: grayscale(60%) blur(5px) brightness(0.7);
+        transform: scale(1.05);
+        z-index: -1;
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 6%;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        transition: all 0.4s ease;
+    }
+
+    /* Logo */
+    .LOGO {
+        font-size: 1.9rem;
+        color: cornsilk;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 11;
+    }
+    .LOGO:hover {
+        color: gold;
+        transform: scale(1.08);
+    }
+
+    /* Nav Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        position: relative;
+        text-decoration: none;
+        color: cornsilk;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 5px 0;
+    }
+
+    /* Sliding underline effect */
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, gold, crimson);
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+        transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    /* Search Box */
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        width: 160px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-box:focus-within {
+        width: 200px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .search-box input {
+        border: none;
+        padding: 10px 15px;
+        outline: none;
+        font-size: 0.9rem;
+        width: 100%;
+        background: transparent;
+    }
+
+    .search-box button {
+        background: gold;
+        border: none;
+        padding: 9px 15px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    .search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+
+    /* Mobile Search Toggle */
+    .search-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: cornsilk;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 5px;
+    }
+
+    .search-toggle:hover {
+        color: gold;
+        transform: scale(1.1);
+    }
+
+    /* Mobile Search Container */
+    .mobile-search-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        z-index: 10;
+    }
+
+    .mobile-search-container.active {
+        display: block;
+    }
+
+    .mobile-search-box {
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .mobile-search-box input {
+        flex: 1;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 25px 0 0 25px;
+        outline: none;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: 1rem;
+    }
+
+    .mobile-search-box button {
+        padding: 12px 20px;
+        border: none;
+        background: gold;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+        z-index: 11;
+    }
+
+    .hamburger span {
+        height: 3px;
+        width: 100%;
+        background-color: cornsilk;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 20px 40px;
+        transition: right 0.4s ease;
+        z-index: 9;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-nav.active {
+        right: 0;
+    }
+
+    .mobile-nav-links {
+        list-style: none;
+        width: 100%;
+    }
+
+    .mobile-nav-links li {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .mobile-nav-links a {
+        color: cornsilk;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-links a:hover {
+        background: rgba(255, 215, 0, 0.2);
+        color: gold;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+        z-index: 8;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Intro Section */
+    .intro {
+        max-width: 1200px;
+        width: 90%;
+        margin: 40px auto;
+        color: gold;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .intro p {
+    font-family: Arial;
+    letter-spacing: 1.2px;
+    line-height: 30px;
+    color: #ffffff;
+    font-size: 16px;
+    max-width: 650px;
+    margin: 0 auto;
+    text-align: center;
+    white-space: pre-line;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 8px;
+    padding: 20px 30px;
+    margin-top: 20px;
+    }
+
+    .intro h1 {
+        font-family: 'Times New Roman', serif;
+        font-size: 56px;
+        letter-spacing: 2px;
+        margin-top: 40px;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        line-height: 1.2;
+    }
+
+    .intro span {
+        color: crimson;
+        position: relative;
+    }
+
+    .intro span::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: crimson;
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+    }
+
+    .intro:hover span::after {
+        transform: scaleX(1);
+    }
+
+    /* Button */
+    .read-more-btn {
+        margin: 20px auto 40px;
+        background: white;
+        color: #b30000;
+        border: 2px solid #ffd700;
+        padding: 15px 24px;
+        font-size: 18px;
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 600;
+        cursor: pointer;
+        border-radius: 30px;
+        transition: all 0.3s ease;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+    }
+
+    /* Hover with smooth animation */
+    .read-more-btn:hover {
+        background: #ffd700;
+        color: cornsilk;
+        transform: scale(1.05);
+        box-shadow: 0 0 14px rgba(255, 215, 0, 0.8);
+    }
+
+    /* Click press-down effect */
+    .read-more-btn:active {
+        transform: scale(0.98);
+    }
+
+    /* Music Player */
+    .music-player {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 50px;
+        padding: 10px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        backdrop-filter: blur(5px);
+        border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+
+    .music-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: gold;
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        color: #333;
+        transition: all 0.3s ease;
+    }
+
+    .music-btn:hover {
+        background: crimson;
+        color: white;
+        transform: scale(1.1);
+    }
+
+    .volume-control {
+        -webkit-appearance: none;
+        width: 80px;
+        height: 5px;
+        border-radius: 5px;
+        background: #555;
+        outline: none;
+        transition: opacity 0.2s;
+    }
+
+    .volume-control::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: gold;
+        cursor: pointer;
+    }
+
+    .volume-control::-moz-range-thumb {
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: gold;
+        cursor: pointer;
+    }
+
+    /* ============================= */
+    /* RESPONSIVE MEDIA QUERIES */
+    /* ============================= */
+
+    /* Tablets (up to 1024px) */
+    @media (max-width: 1024px) {
+        .intro h1 {
+            font-size: 40px;
+        }
+        .intro p {
+            font-size: 15px;
+        }
+    }
+
+    /* Mobile (up to 768px) */
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 12px 5%;
+        }
+        
+        .nav-links, .search-box {
+            display: none;
+        }
+        
+        .hamburger, .search-toggle {
+            display: flex;
+        }
+        
+        .intro {
+            margin-top: 20px;
+        }
+        
+        .intro h1 {
+            font-size: 36px;
+            padding: 0 10px;
+        }
+        
+        .intro p {
+            padding: 15px;
+            font-size: 14px;
+            line-height: 26px;
+            text-align: center;
+        }
+        
+        .LOGO {
+            font-size: 1.7rem;
+        }
+        
+        .music-player {
+            bottom: 10px;
+            right: 10px;
+            transform: scale(0.9);
+        }
+        
+        /* Hamburger animation when active */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+    }
+  </style>
+</head>
+<body>
+ <div class="main">
+    <nav class="navbar">
+        <h2 class="LOGO">Societas XXI</h2>
+        <ul class="nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+            <button type="button">🔍</button>
+        </div>
+        
+        <!-- Search Toggle Button (Mobile) -->
+        <button class="search-toggle" id="searchToggle">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    
+    <!-- Mobile Search Container -->
+    <div class="mobile-search-container" id="mobileSearchContainer">
+        <div class="mobile-search-box">
+            <input type="text" placeholder="Search..." id="mobileSearchInput">
+            <button type="button" id="mobileSearchBtn">🔍</button>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+    
+    <div class="intro">
+        <h1 class="title"><span>APO</span><br>ON THE<BR><span>WALL</span></h1>
+            <p class="INT">
+                -by BJ Patino <br> <br>
+                There's this man's photo on the wall
+                Of my father's office at home, you
+                Know, where father brings his work,
+                Where he doesn't look strange
+                Still wearing his green uniform
+                And colored breast plates, where,
+                To prove that he works hard, he
+                Also brought a photo of his boss
+                Whom he calls Apo, so Apo could
+                You know, hang around on the wall
+                Behind him and look over his shoulders
+                To make sure he's snappy and all.
+                Father snapped at me once, caught me
+                Sneaking around his office at home
+                Looking at the stuff on his wall - handguns,
+                Plaques, a sword, medals a rifle -
+                Told me that was no place for a boy
+                Only men, when he didn't really
+                Have to tell me because, you know,
+                That photo of Apo on the wall was already
+                Looking at me around,
+                His eyes following me like he was
+                That scary Jesus in the hallway, saying
+                I know what you're doing.
+            </p>
+            <a href="Poem.html">
+                <button class="read-more-btn">Read More</button>
+              </a>
+    </div>
+    
+    <!-- Music Player -->
+    <div class="music-player">
+        <button class="music-btn" id="playPauseBtn">▶</button>
+        <input type="range" class="volume-control" id="volumeControl" min="0" max="1" step="0.1" value="0.5">
+    </div>
+ </div>
+
+ <!-- Audio Element -->
+ <audio id="bgMusic" loop>
+    <!-- Replace with your actual music file -->
+    <source src="ElevenLabs_2025-08-22T05_49_02_John Henry - Filipino Voice_pvc_sp82_s47_sb74_se13_b_m2.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+ </audio>
+
+ <script>
+    // Get elements
+    const searchInput = document.querySelector(".search-box input");
+    const searchButton = document.querySelector(".search-box button");
+    const mobileSearchInput = document.getElementById("mobileSearchInput");
+    const mobileSearchBtn = document.getElementById("mobileSearchBtn");
+    const audio = document.getElementById("bgMusic");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const volumeControl = document.getElementById("volumeControl");
+    const hamburger = document.getElementById("hamburger");
+    const mobileNav = document.getElementById("mobileNav");
+    const overlay = document.getElementById("overlay");
+    const searchToggle = document.getElementById("searchToggle");
+    const mobileSearchContainer = document.getElementById("mobileSearchContainer");
+
+    // Function to handle the search
+    function performSearch(inputElement) {
+        const query = inputElement.value.trim();
+        if (query) {
+            // Open Google search (or replace with your custom search)
+            window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
+            // Close mobile search if open
+            mobileSearchContainer.classList.remove('active');
+            mobileSearchInput.value = '';
+        } else {
+            alert("Please enter a search term.");
+        }
+    }
+
+    // Click event for desktop search
+    searchButton.addEventListener("click", () => performSearch(searchInput));
+
+    // Enter key event for desktop search
+    searchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            performSearch(searchInput);
+        }
+    });
+
+    // Click event for mobile search
+    mobileSearchBtn.addEventListener("click", () => performSearch(mobileSearchInput));
+
+    // Enter key event for mobile search
+    mobileSearchInput.addEventListener("keydown", function (e) {
+        if (e.key === "Enter") {
+            performSearch(mobileSearchInput);
+        }
+    });
+
+    // Toggle mobile search
+    searchToggle.addEventListener('click', function() {
+        mobileSearchContainer.classList.toggle('active');
+        if (mobileSearchContainer.classList.contains('active')) {
+            mobileSearchInput.focus();
+        }
+    });
+
+    // Close mobile search when clicking outside
+    document.addEventListener('click', function(e) {
+        if (mobileSearchContainer.classList.contains('active') && 
+            !mobileSearchContainer.contains(e.target) && 
+            !searchToggle.contains(e.target)) {
+            mobileSearchContainer.classList.remove('active');
+        }
+    });
+
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+      const navbar = document.querySelector('.navbar');
+      if (window.scrollY > 50) {
+        navbar.style.background = "rgba(0, 0, 0, 0.85)";
+        navbar.style.padding = "10px 6%";
+      } else {
+        navbar.style.background = "rgba(0, 0, 0, 0.65)";
+        navbar.style.padding = "15px 6%";
+      }
+    });
+
+    // Music player functionality
+    playPauseBtn.addEventListener('click', function() {
+        if (audio.paused) {
+            audio.play();
+            playPauseBtn.textContent = "❚❚";
+        } else {
+            audio.pause();
+            playPauseBtn.textContent = "▶";
+        }
+    });
+
+    // Volume control
+    volumeControl.addEventListener('input', function() {
+        audio.volume = volumeControl.value;
+    });
+
+    // Mobile menu toggle
+    hamburger.addEventListener('click', function() {
+        this.classList.toggle('active');
+        mobileNav.classList.toggle('active');
+        overlay.classList.toggle('active');
+        
+        // Close search if open
+        mobileSearchContainer.classList.remove('active');
+        
+        // Prevent body scrolling when menu is open
+        document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+    });
+
+    // Close menu when clicking overlay
+    overlay.addEventListener('click', function() {
+        hamburger.classList.remove('active');
+        mobileNav.classList.remove('active');
+        this.classList.remove('active');
+        document.body.style.overflow = '';
+    });
+
+    // Set initial volume
+    audio.volume = 0.5;
+    
+    // Try to autoplay with user interaction
+    document.addEventListener('click', function() {
+        if (audio.paused) {
+            // Try to play once to get permission
+            audio.play().then(() => {
+                audio.pause();
+                playPauseBtn.textContent = "▶";
+            }).catch(err => {
+                console.log("Autoplay prevented:", err);
+            });
+        }
+    }, { once: true });
+ </script>
+ 
+</body>
+</html> 

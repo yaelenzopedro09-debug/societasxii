@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Performance Task - Apo on the Wall</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base Styles */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    :root {
+        --primary-gold: #ffd700;
+        --primary-crimson: #dc143c;
+        --dark-bg: #111;
+        --darker-bg: #0a0a0a;
+        --text-light: #f8f8f8;
+        --card-bg: rgba(30, 30, 30, 0.85);
+        --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    body {
+        background: var(--dark-bg);
+        color: var(--text-light);
+        font-family: 'Montserrat', sans-serif;
+        line-height: 1.7;
+        overflow-x: hidden;
+        background-image: 
+            radial-gradient(circle at 15% 50%, rgba(220, 20, 60, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 85% 30%, rgba(255, 215, 0, 0.1) 0%, transparent 20%),
+            radial-gradient(circle at 50% 80%, rgba(220, 20, 60, 0.1) 0%, transparent 20%);
+    }
+
+    /* Navbar */
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 6%;
+        background: rgba(0, 0, 0, 0.65);
+        backdrop-filter: blur(8px);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        transition: all 0.4s ease;
+    }
+
+    /* Logo */
+    .LOGO {
+        font-size: 1.9rem;
+        color: cornsilk;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 11;
+    }
+    .LOGO:hover {
+        color: gold;
+        transform: scale(1.08);
+    }
+
+    /* Nav Links */
+    .nav-links {
+        list-style: none;
+        display: flex;
+        gap: 30px;
+    }
+
+    .nav-links a {
+        position: relative;
+        text-decoration: none;
+        color: cornsilk;
+        font-size: 1rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        padding: 5px 0;
+    }
+
+    /* Sliding underline effect */
+    .nav-links a::after {
+        content: '';
+        position: absolute;
+        width: 0;
+        height: 2px;
+        bottom: 0;
+        left: 0;
+        background: linear-gradient(90deg, gold, crimson);
+        transition: width 0.3s ease;
+        border-radius: 2px;
+    }
+
+    .nav-links a:hover {
+        color: gold;
+        transform: translateY(-2px);
+    }
+
+    .nav-links a:hover::after {
+        width: 100%;
+    }
+
+    /* Search Box */
+    .search-box {
+        display: flex;
+        align-items: center;
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 25px;
+        overflow: hidden;
+        transition: all 0.4s ease;
+        width: 160px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .search-box:focus-within {
+        width: 200px;
+        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    }
+
+    .search-box input {
+        border: none;
+        padding: 10px 15px;
+        outline: none;
+        font-size: 0.9rem;
+        width: 100%;
+        background: transparent;
+    }
+
+    .search-box button {
+        background: gold;
+        border: none;
+        padding: 9px 15px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+    .search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+    
+    /* Mobile Search Toggle */
+    .search-toggle {
+        display: none;
+        background: none;
+        border: none;
+        color: cornsilk;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        padding: 5px;
+    }
+
+    .search-toggle:hover {
+        color: gold;
+        transform: scale(1.1);
+    }
+
+    /* Mobile Search Container */
+    .mobile-search-container {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        padding: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid rgba(255, 215, 0, 0.3);
+        z-index: 10;
+    }
+
+    .mobile-search-container.active {
+        display: block;
+    }
+
+    .mobile-search-box {
+        display: flex;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .mobile-search-box input {
+        flex: 1;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 25px 0 0 25px;
+        outline: none;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: 1rem;
+    }
+
+    .mobile-search-box button {
+        padding: 12px 20px;
+        border: none;
+        background: gold;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-search-box button:hover {
+        background: crimson;
+        color: white;
+    }
+
+    /* Hamburger Menu */
+    .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 30px;
+        height: 21px;
+        cursor: pointer;
+        z-index: 11;
+    }
+
+    .hamburger span {
+        height: 3px;
+        width: 100%;
+        background-color: cornsilk;
+        border-radius: 3px;
+        transition: all 0.3s ease;
+    }
+
+    /* Mobile Nav */
+    .mobile-nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 80px 20px 40px;
+        transition: right 0.4s ease;
+        z-index: 9;
+        box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    }
+
+    .mobile-nav.active {
+        right: 0;
+    }
+
+    .mobile-nav-links {
+        list-style: none;
+        width: 100%;
+    }
+
+    .mobile-nav-links li {
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .mobile-nav-links a {
+        color: cornsilk;
+        text-decoration: none;
+        font-size: 1.2rem;
+        font-weight: 500;
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        transition: all 0.3s ease;
+    }
+
+    .mobile-nav-links a:hover {
+        background: rgba(255, 215, 0, 0.2);
+        color: gold;
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(5px);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.4s ease;
+        z-index: 8;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Hero Section */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 40px 20px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url(https://upload.wikimedia.org/wikipedia/en/3/3b/EDSA_Revolution_pic1.jpg) center/cover no-repeat;
+        filter: grayscale(80%) brightness(0.3) blur(1px);
+        z-index: -1;
+        transform: scale(1.05);
+    }
+
+    .hero-content {
+        max-width: 1000px;
+        z-index: 2;
+    }
+
+    .hero-title {
+        font-family: Arial;
+        font-size: 4.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-light);
+        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        line-height: 1.2;
+    }
+
+    .hero-title span {
+        color: var(--primary-gold);
+        position: relative;
+        display: inline-block;
+    }
+
+    .hero-title span::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+        transform: scaleX(0);
+        transition: transform 1s ease;
+    }
+
+    .hero:hover .hero-title span::after {
+        transform: scaleX(1);
+    }
+
+    .hero-subtitle {
+        font-size: 1.4rem;
+        max-width: 700px;
+        margin: 0 auto 40px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Content Sections */
+    .section {
+        padding: 100px 6%;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .section-title {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.8rem;
+        text-align: center;
+        margin-bottom: 60px;
+        color: var(--primary-gold);
+        position: relative;
+        padding-bottom: 20px;
+    }
+
+    .section-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100px;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-gold), var(--primary-crimson));
+        border-radius: 2px;
+    }
+
+    .content-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 40px;
+        margin-bottom: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+    }
+
+    .content-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+        color: var(--primary-gold);
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .card-title i {
+        font-size: 1.5rem;
+        color: var(--primary-crimson);
+    }
+
+    .card-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .card-text p {
+        margin-bottom: 20px;
+    }
+
+    .highlight {
+        color: var(--primary-gold);
+        font-weight: 600;
+    }
+
+    blockquote {
+        border-left: 4px solid var(--primary-crimson);
+        padding: 20px 30px;
+        margin: 30px 0;
+        background: rgba(220, 20, 60, 0.1);
+        border-radius: 0 8px 8px 0;
+        font-style: italic;
+        position: relative;
+    }
+
+    blockquote::before {
+        content: '"';
+        font-size: 4rem;
+        position: absolute;
+        left: 10px;
+        top: -10px;
+        color: rgba(220, 20, 60, 0.3);
+        font-family: 'Playfair Display', serif;
+    }
+
+    /* Performance Elements Grid */
+    .elements-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin: 50px 0;
+    }
+
+    .element-card {
+        background: linear-gradient(145deg, rgba(30, 30, 30, 0.9), rgba(20, 20, 20, 0.9));
+        border-radius: 12px;
+        padding: 30px;
+        text-align: center;
+        transition: var(--transition);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .element-card:hover {
+        transform: translateY(-8px) scale(1.02);
+        border-color: var(--primary-gold);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .element-icon {
+        font-size: 3rem;
+        color: var(--primary-gold);
+        margin-bottom: 20px;
+        transition: var(--transition);
+    }
+
+    .element-card:hover .element-icon {
+        transform: scale(1.2);
+        color: var(--primary-crimson);
+    }
+
+    .element-title {
+        font-size: 1.4rem;
+        color: var(--text-light);
+        margin-bottom: 15px;
+        font-weight: 600;
+    }
+
+    .element-desc {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    /* Video Section Styles */
+    .video-container {
+        margin: 50px 0;
+        text-align: center;
+    }
+
+    .video-card {
+        background: var(--card-bg);
+        border-radius: 16px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        transition: var(--transition);
+        backdrop-filter: blur(10px);
+    }
+
+    .video-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+        border-color: rgba(255, 215, 0, 0.3);
+    }
+
+    .video-wrapper {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+        height: 0;
+        overflow: hidden;
+        border-radius: 12px;
+        margin-bottom: 20px;
+    }
+
+    .video-wrapper iframe,
+    .video-wrapper video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border: none;
+    }
+
+    .video-caption {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-block;
+        padding: 14px 32px;
+        background: linear-gradient(135deg, var(--primary-gold), var(--primary-crimson));
+        color: var(--text-light);
+        border: none;
+        border-radius: 50px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+
+    .btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.5);
+    }
+
+    .btn:hover::before {
+        left: 100%;
+    }
+
+    .btn-outline {
+        background: transparent;
+        border: 2px solid var(--primary-gold);
+        color: var(--primary-gold);
+        box-shadow: none;
+    }
+
+    .btn-outline:hover {
+        background: var(--primary-gold);
+        color: var(--dark-bg);
+    }
+
+    /* Footer */
+    .footer {
+        background: var(--darker-bg);
+        padding: 60px 6% 30px;
+        text-align: center;
+        border-top: 1px solid rgba(255, 215, 0, 0.1);
+    }
+
+    .footer-content {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .footer-logo {
+        font-size: 2.2rem;
+        color: var(--primary-gold);
+        font-weight: 700;
+        margin-bottom: 20px;
+        font-family: 'Playfair Display', serif;
+    }
+
+    .footer-text {
+        color: rgba(255, 255, 255, 0.7);
+        margin-bottom: 30px;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .footer-nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        margin-bottom: 40px;
+    }
+
+    .footer-nav a {
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        transition: var(--transition);
+    }
+
+    .footer-nav a:hover {
+        color: var(--primary-gold);
+    }
+
+    .copyright {
+        color: rgba(255, 255, 255, 0.5);
+        font-size: 0.9rem;
+        margin-top: 30px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+        .hero-title {
+            font-size: 3.5rem;
+        }
+        
+        .nav-links {
+            gap: 20px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .navbar {
+            padding: 12px 5%;
+        }
+        
+        .nav-links, .search-box {
+            display: none;
+        }
+        
+        .hamburger, .search-toggle {
+            display: flex;
+        }
+        
+        .hero-title {
+            font-size: 2.8rem;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+        }
+        
+        .section {
+            padding: 60px 20px;
+        }
+        
+        .section-title {
+            font-size: 2.2rem;
+        }
+        
+        .content-card {
+            padding: 25px;
+        }
+        
+        .elements-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        /* Hamburger animation when active */
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(9px) rotate(45deg);
+        }
+        
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-9px) rotate(-45deg);
+        }
+    }
+
+    @media (max-width: 480px) {
+        .hero-title {
+            font-size: 2.2rem;
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            font-size: 1rem;
+        }
+        
+        .LOGO {
+            font-size: 1.7rem;
+        }
+    }
+  </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="LOGO">Societas XXI</div>
+        <ul class="nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+        <div class="search-box">
+            <input type="text" placeholder="Search">
+            <button type="button">🔍</button>
+        </div>
+        
+        <!-- Search Toggle Button (Mobile) -->
+        <button class="search-toggle" id="searchToggle">
+            <i class="fas fa-search"></i>
+        </button>
+        
+        <!-- Hamburger Menu -->
+        <div class="hamburger" id="hamburger">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+    
+    <!-- Mobile Search Container -->
+    <div class="mobile-search-container" id="mobileSearchContainer">
+        <div class="mobile-search-box">
+            <input type="text" placeholder="Search..." id="mobileSearchInput">
+            <button type="button" id="mobileSearchBtn">🔍</button>
+        </div>
+    </div>
+    
+    <!-- Mobile Navigation -->
+    <div class="mobile-nav" id="mobileNav">
+        <ul class="mobile-nav-links">
+            <li><a href="21st.html">Home</a></li>
+            <li><a href="Poem.html">Reflection</a></li>
+            <li><a href="pt.html">Performance task</a></li>
+            <li><a href="interview.html">Interview</a></li>
+            <li><a href="member.html">Team</a></li>
+        </ul>
+    </div>
+    
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Performance <span>Task</span></h1>
+            <p class="hero-subtitle">Bringing "Apo on the Wall" to life through dramatic interpretation and historical reflection</p>
+            <a href="#performance" class="btn">Explore More</a>
+        </div>
+    </section>
+
+    <!-- Performance Section -->
+    <section id="performance" class="section">
+        <h2 class="section-title">Our Dramatization</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-theater-masks"></i> Performance Task</h3>
+            <div class="card-text">
+                <p>Our group's performance of <span class="highlight">"Apo on the Wall"</span> was designed to bring the poem's words to life through movement, expression, and staging. Each actor took on a specific role that embodied a moment in the poem, with actions carefully matched to the lines they delivered.</p>
+                
+                <p>From pointing to the imaginary photo of "Apo" on the wall, to the soldier-like posture of the father, and the fearful glances of the child, our acting aimed to capture both the literal and emotional details of the text. Props such as a picture frame and symbolic gestures helped the audience visualize the constant presence of authority.</p>
+                
+                <blockquote>
+                    "The sequence built toward the climax, where 'Apo's' watchful gaze became overwhelming, ending with the child retreating in fear, a powerful physical representation of the tension the poem conveys."
+                </blockquote>
+            </div>
+        </div>
+
+        <!-- Video Section -->
+        <div class="video-container">
+            <div class="video-card">
+                <h3 class="card-title"><i class="fas fa-video"></i> Watch Our Performance</h3>
+                <div class="video-wrapper">
+                    <!-- Replace the video source with your actual performance video -->
+                    <video controls poster="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgv4qCMGMVqYDcx9grfnXF88yDss_lkJfVDVIweGuF3PvaRjnwB1gboyf_VBbVfjEunmo2tzWLBFz4Cyt1kjfV0mYczBET2wavQAN-x6tEGPa_uw47zRMLqn_aGEROI7VXviCJtUrae8vk/w1200-h630-p-k-no-nu/PD_1081.JPG">
+                        <source src="pt.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+                <p class="video-caption">Our group's interpretation of "Apo on the Wall" by Bj Patino</p>
+            </div>
+        </div>
+
+        <div class="elements-grid">
+            <div class="element-card">
+                <div class="element-icon"><i class="fas fa-user"></i></div>
+                <h3 class="element-title">Character Portrayal</h3>
+                <p class="element-desc">Each actor embodied specific roles with carefully crafted movements and expressions.</p>
+            </div>
+            
+            <div class="element-card">
+                <div class="element-icon"><i class="fas fa-image"></i></div>
+                <h3 class="element-title">Symbolic Props</h3>
+                <p class="element-desc">Used picture frames and gestures to represent the ever-present authority.</p>
+            </div>
+            
+            <div class="element-card">
+                <div class="element-icon"><i class="fas fa-eye"></i></div>
+                <h3 class="element-title">The Gaze</h3>
+                <p class="element-desc">Emphasized the watchful presence that creates tension throughout the performance.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Historical Context Section -->
+    <section class="section">
+        <h2 class="section-title">Historical Context</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-landmark"></i> Martial Law Realities</h3>
+            <div class="card-text">
+                <p>Our dramatization aims to bring to life the reality of what it was like to live under Martial Law, a time when power and control were not just political concepts but constant, everyday realities. We portrayed how this presence could be felt in even the smallest moments of daily life.</p>
+                
+                <p>The characters' movements, from their stiff, almost mechanical obedience to their silent expressions of unease, reflected the <span class="highlight">discipline, surveillance, and fear</span> that ordinary people carried with them. By keeping "Apo" in the background as a silent yet dominating presence, we wanted to show how authority during that era was inescapable, always there, always watching, even in the most private spaces like the home.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Impact Section -->
+    <section class="section">
+        <h2 class="section-title">Impact on Children</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-child"></i> Childhood Under Watch</h3>
+            <div class="card-text">
+                <p>We also made sure to show how this atmosphere affected children, who were not spared from the tension. The child in the scene is surrounded by symbols of power, uniforms, medals, and weapons — things that should have been far from a child's world.</p>
+                
+                <p>This mirrors the way history tells us that even the youngest members of society lived under the shadow of authority, growing up with a constant awareness that someone was watching.</p>
+                
+                <blockquote>
+                    "Through our performance, we wanted the audience to not only see but feel what it meant to live under such conditions."
+                </blockquote>
+            </div>
+        </div>
+    </section>
+
+    <!-- Message Section -->
+    <section class="section">
+        <h2 class="section-title">Message & Reflection</h2>
+        
+        <div class="content-card">
+            <h3 class="card-title"><i class="fas fa-balance-scale"></i> Remembering History</h3>
+            <div class="card-text">
+                <p>Through our performance, we wanted the audience to not only see but feel what it meant to live under such conditions. It's a reminder that the freedoms we enjoy today were not always here, and that they must be valued and protected.</p>
+                
+                <p>Most of all, it is a call to remember our history so that power, if it must watch over the people, does so to protect them, never to oppress.</p>
+                
+                <p>Our performance serves as both an artistic interpretation and historical reflection, connecting the poetic narrative with the harsh realities of Martial Law era Philippines.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 50px;">
+            <a href="Poem.html" class="btn btn-outline"><i class="fas fa-arrow-left"></i> Back to Poem</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Societas XXI</div>
+            <p class="footer-text">Exploring literature and history through creative interpretation and performance.</p>
+            
+            <div class="footer-nav">
+              
+                    <a href="21st.html">Home</a>
+                    <a href="Poem.html">Reflection</a>
+                    <a href="pt.html">Performance task</a>
+                    <a href="interview.html">Interview</a>
+                    <a href="member.html">Team</a>
+            </div>
+            
+            <p class="copyright">© 2025 Societas XXI. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Prevent zooming on mobile devices
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+
+        // Disable double tap to zoom
+        document.addEventListener('dblclick', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Get elements
+        const searchInput = document.querySelector(".search-box input");
+        const searchButton = document.querySelector(".search-box button");
+        const mobileSearchInput = document.getElementById("mobileSearchInput");
+        const mobileSearchBtn = document.getElementById("mobileSearchBtn");
+        const hamburger = document.getElementById("hamburger");
+        const mobileNav = document.getElementById("mobileNav");
+        const overlay = document.getElementById("overlay");
+        const searchToggle = document.getElementById("searchToggle");
+        const mobileSearchContainer = document.getElementById("mobileSearchContainer");
+
+        // Function to handle the search
+        function performSearch(inputElement) {
+            const query = inputElement.value.trim();
+            if (query) {
+                // Open Google search (or replace with your custom search)
+                window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, "_blank");
+                // Close mobile search if open
+                mobileSearchContainer.classList.remove('active');
+                mobileSearchInput.value = '';
+            } else {
+                alert("Please enter a search term.");
+            }
+        }
+
+        // Click event for desktop search
+        searchButton.addEventListener("click", () => performSearch(searchInput));
+
+        // Enter key event for desktop search
+        searchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                performSearch(searchInput);
+            }
+        });
+
+        // Click event for mobile search
+        mobileSearchBtn.addEventListener("click", () => performSearch(mobileSearchInput));
+
+        // Enter key event for mobile search
+        mobileSearchInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") {
+                performSearch(mobileSearchInput);
+            }
+        });
+
+        // Toggle mobile search
+        searchToggle.addEventListener('click', function() {
+            mobileSearchContainer.classList.toggle('active');
+            if (mobileSearchContainer.classList.contains('active')) {
+                mobileSearchInput.focus();
+            }
+        });
+
+        // Close mobile search when clicking outside
+        document.addEventListener('click', function(e) {
+            if (mobileSearchContainer.classList.contains('active') && 
+                !mobileSearchContainer.contains(e.target) && 
+                !searchToggle.contains(e.target)) {
+                mobileSearchContainer.classList.remove('active');
+            }
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', function() {
+          const navbar = document.querySelector('.navbar');
+          if (window.scrollY > 50) {
+            navbar.style.background = "rgba(0, 0, 0, 0.85)";
+            navbar.style.padding = "10px 6%";
+          } else {
+            navbar.style.background = "rgba(0, 0, 0, 0.65)";
+            navbar.style.padding = "15px 6%";
+          }
+        });
+
+        // Mobile menu toggle
+        hamburger.addEventListener('click', function() {
+            this.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+            overlay.classList.toggle('active');
+            
+            // Close search if open
+            mobileSearchContainer.classList.remove('active');
+            
+            // Prevent body scrolling when menu is open
+            document.body.style.overflow = mobileNav.classList.contains('active') ? 'hidden' : '';
+        });
+
+        // Close menu when clicking overlay
+        overlay.addEventListener('click', function() {
+            hamburger.classList.remove('active');
+            mobileNav.classList.remove('active');
+            this.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Animate elements on scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.content-card, .element-card, .video-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            observer.observe(el);
+            
+            const index = Array.from(document.querySelectorAll('.content-card, .element-card, .video-card')).indexOf(el);
+            el.style.transitionDelay = `${index * 0.1}s`;
+            
+            el.classList.add('observe-me');
+        });
+
+        // Add animation class when element is in view
+        document.addEventListener('DOMContentLoaded', function() {
+            const style = document.createElement('style');
+            style.textContent = `
+                .observe-me.animate-in {
+                    opacity: 1 !important;
+                    transform: translateY(0) !important;
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
